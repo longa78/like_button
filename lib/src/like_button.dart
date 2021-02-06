@@ -72,6 +72,7 @@ class BeLikeButton extends StatefulWidget {
   final CountDecoration countDecoration;
 
   final bool Function() preTapValidation;
+  final VoidCallback onTapInvalid;
 
   const BeLikeButton(
       {Key key,
@@ -83,6 +84,7 @@ class BeLikeButton extends StatefulWidget {
       this.likeCount,
       this.isLiked: false,
       this.preTapValidation,
+      this.onTapInvalid,
       this.mainAxisAlignment: MainAxisAlignment.center,
       this.crossAxisAlignment: CrossAxisAlignment.center,
       this.animationDuration = const Duration(milliseconds: 1000),
@@ -245,7 +247,10 @@ class _BeLikeButtonState extends State<BeLikeButton> with TickerProviderStateMix
 
   void _onTap() {
     if (_controller.isAnimating) return;
-    if (widget.preTapValidation() == false) return;
+    if (widget.preTapValidation() == false) {
+      widget.onTapInvalid();
+      return;
+    }
 
     _handleIsLikeChanged(!(_isLiked ?? true));
   }
