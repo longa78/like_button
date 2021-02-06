@@ -1,10 +1,9 @@
 ///
 ///  create by zmtzawqlp on 2019/5/27
 ///
-
 import 'package:flutter/material.dart';
-import 'package:like_button/src/painter/circle_painter.dart';
 import 'package:like_button/src/painter/bubbles_painter.dart';
+import 'package:like_button/src/painter/circle_painter.dart';
 import 'package:like_button/src/utils/like_button_model.dart';
 import 'package:like_button/src/utils/like_button_typedef.dart';
 import 'package:like_button/src/utils/like_button_util.dart';
@@ -72,6 +71,8 @@ class BeLikeButton extends StatefulWidget {
   ///return count widget with decoration
   final CountDecoration countDecoration;
 
+  final bool Function() preTapValidation;
+
   const BeLikeButton(
       {Key key,
       this.size: 30.0,
@@ -81,6 +82,7 @@ class BeLikeButton extends StatefulWidget {
       double circleSize,
       this.likeCount,
       this.isLiked: false,
+      this.preTapValidation,
       this.mainAxisAlignment: MainAxisAlignment.center,
       this.crossAxisAlignment: CrossAxisAlignment.center,
       this.animationDuration = const Duration(milliseconds: 1000),
@@ -243,6 +245,8 @@ class _BeLikeButtonState extends State<BeLikeButton> with TickerProviderStateMix
 
   void _onTap() {
     if (_controller.isAnimating) return;
+    if (widget.preTapValidation() == false) return;
+
     _handleIsLikeChanged(!(_isLiked ?? true));
   }
 
